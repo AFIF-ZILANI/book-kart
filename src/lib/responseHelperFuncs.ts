@@ -51,14 +51,14 @@ export function ErrorResponse(error: unknown): NextResponse {
 export function SuccessResponse<T>(
     message: string,
     status: number = 200,
-    data: T | null
+    data?: T | null
 ): NextResponse {
     return NextResponse.json(
         {
             message, // Message to be returned in the response
             status, // Status code to be returned in the response
             success: true, // Indicates that the request was successful
-            data, // Data to be returned in the response, can be null
+            data: data ? data : null, // Data to be returned in the response, can be null
         },
         {
             status, // HTTP status code for success
