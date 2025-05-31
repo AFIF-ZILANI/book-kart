@@ -1,11 +1,10 @@
 export interface AddNewBookData {
     title: string;
-    auther: string;
+    author: string;
     publisher: string;
     edition: string;
     isbn: string;
     category: string;
-    subject: string;
     language: string;
     condition: "new" | "like-new" | "excellent" | "good" | "fair";
     pages: number;
@@ -27,7 +26,7 @@ export interface AddNewBookData {
     finalPrice: number; // after discounts/offers
     shippingCharge: number;
     stock: number;
-    status: "available" | "unavailable" | "pre-order" | "out-of-stock";
+    status: "available" | "pending" | "sold" | "removed";
     tags: string[];
     paymentInfo: {
         method: "bkash" | "paypal" | "nagad" | "rocket" | "google-pay";
