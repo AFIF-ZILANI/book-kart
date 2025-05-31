@@ -1,4 +1,5 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model, Types, models, Model } from "mongoose";
+import { IBook } from "../types/modelTypes";
 
 const PaymentDetailsSchema = new Schema(
     {
@@ -32,7 +33,6 @@ const BookSchema = new Schema(
         isbn: { type: String, unique: true, index: true },
         edition: { type: String },
         category: { type: String, index: true },
-        subject: { type: String },
         language: { type: String, default: "English" },
         condition: {
             type: String,
@@ -80,14 +80,26 @@ const BookSchema = new Schema(
     }
 );
 
-BookSchema.pre("save", function (next) {
+BookSchema.pre("save", async function (next) {
     if (this.isModified("title")) {
-        this.slug = this.title
+        let slug = this.title
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/(^-|-$)/g, "");
+        
+        // Check if slug exists
+        let slugExists = await (this.constructor as Model<IBook>).findOne({ slug });
+        if (slugExists) {
+            // Append random 6-character string to slug
+            const randomStr = Math.random().toString(36).substring(2, 8);
+            slug = `${slug}-${randomStr}`;
+        }
+        this.slug = slug;
     }
     next();
 });
 
-export default model("Book", BookSchema);
+const BookModel: Model<IBook> = (models.Book as Model<IBook>) || model<IBook>("Book", BookSchema);
+
+export default BookModel;
+// This code defines a Mongoose schema and model for a Book entity in a MongoDB database.
