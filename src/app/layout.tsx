@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { Roboto_Mono } from "next/font/google";
+import { Roboto_Mono, Ubuntu_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
 import { LayoutWrapper } from "@/wrappers";
 
-const roboto_mono = Roboto_Mono({
+const inter = Inter({
     subsets: ["latin"],
     display: "swap",
+    weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+    variable: "--font-inter",
+    fallback: ["system-ui", "sans-serif"],
+    style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -22,12 +26,12 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${roboto_mono.className} antialiased`}>
-                {/* <LayoutWrapper> */}
+            <body className={`${inter.className} antialiased`}>
+                <LayoutWrapper>
                     <Header />
                     <main>{children}</main>
                     <Footer />
-                {/* </LayoutWrapper> */}
+                </LayoutWrapper>
                 <time dateTime="2016-10-25" suppressHydrationWarning />
             </body>
         </html>
