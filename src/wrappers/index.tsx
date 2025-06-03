@@ -2,12 +2,15 @@
 import React from "react";
 import ReducWrapper from "./ReducWrapper";
 import { Toaster } from "react-hot-toast";
+import ReactQueryClientWrapper from "./ReactQueryWrapper";
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return (
-        <ReducWrapper>
-            <Toaster />
-            {children}
-        </ReducWrapper>
+        // <ReducWrapper>
+            <ReactQueryClientWrapper>
+                <Toaster />
+                {children}
+            </ReactQueryClientWrapper>
+        // </ReducWrapper>
     );
 }
