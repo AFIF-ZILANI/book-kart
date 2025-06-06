@@ -50,7 +50,12 @@ const BookSchema = new Schema(
             value: Number,
             unit: { type: String, enum: ["kg", "lbs"], default: "kg" },
         },
-        images: [{ type: String }],
+        images: [
+            {
+                public_id: { type: String, required: true },
+                secure_url: { type: String, required: true },
+            },
+        ],
         description: { type: String },
         price: { type: Number, required: true, min: 1 },
         inCurrency: { type: String, default: "BDT" },
@@ -86,7 +91,7 @@ BookSchema.pre("save", async function (next) {
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/(^-|-$)/g, "");
-        
+
         // Check if slug exists
         let slugExists = await (this.constructor as Model<IBook>).findOne({ slug });
         if (slugExists) {
