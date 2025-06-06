@@ -21,13 +21,13 @@ export interface IBook {
         value?: number;
         unit: "kg" | "lbs";
     };
-    images: string[];
+    images: Array<{public_id: string; secure_url: string}>;
     description?: string;
     price: number;
     inCurrency: string;
     discount: number;
     finalPrice?: number;
-    shipping_charge: number;
+    shipping_charge?: number;
     stock: number;
     status: "available" | "pending" | "sold" | "removed";
     tags: string[];
