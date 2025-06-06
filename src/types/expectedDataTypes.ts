@@ -18,18 +18,18 @@ export interface AddNewBookData {
         value: number;
         unit: "kg" | "lbs";
     };
-    images: string[];
+    images: Array<{public_id: string; secure_url: string}>;
     description: string;
     price: number;
     inCurrency: string;
     discount: number; // percentage discount
     finalPrice: number; // after discounts/offers
-    shippingCharge: number;
+
     stock: number;
     status: "available" | "pending" | "sold" | "removed";
     tags: string[];
-    paymentInfo: {
+    payment_details: {
         method: "bkash" | "paypal" | "nagad" | "rocket" | "google-pay";
-        accountIdentifier: string; // e.g., phone number for bkash, email for paypal
+        account_identifier: string; // e.g., phone number for bkash, email for paypal
     };
 }
