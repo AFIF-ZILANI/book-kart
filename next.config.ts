@@ -5,7 +5,20 @@ const nextConfig: NextConfig = {
     reactStrictMode: true,
     allowedDevOrigins: ["*"],
     images: {
-        domains: ["images.unsplash.com", "media.istockphoto.com"],
+        remotePatterns: [
+            {
+                protocol: "https",               //--------------------------
+                hostname: "images.unsplash.com", //temprorary for development
+            },
+            {
+                protocol: "https",                 //--------------------------
+                hostname: "media.istockphoto.com", //temprorary for development
+            },
+            {
+                protocol: "https",
+                hostname: "res.cloudinary.com",
+            },
+        ],
     },
 };
 
