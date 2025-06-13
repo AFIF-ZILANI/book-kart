@@ -1,30 +1,7 @@
 import { Schema, model, Types, models, Model } from "mongoose";
 import { IBook } from "../types/modelTypes";
 
-const PaymentDetailsSchema = new Schema(
-    {
-        method: {
-            type: String,
-            enum: ["bkash", "nagad", "rocket", "paypal", "google-pay"],
-            required: true,
-        },
-        account_identifier: { type: String, required: true }, // e.g., phone number for bkash, email for paypal
-    },
-    { _id: false }
-);
-
-const SellerInfoSchema = new Schema(
-    {
-        name: { type: String, required: true },
-        contact: { type: String, required: true },
-        email: { type: String },
-        rating: { type: Number, default: 0 },
-        total_sales: { type: Number, default: 0 },
-    },
-    { _id: false }
-);
-
-const BookSchema = new Schema(
+const BookSchema = new Schema<IBook>(
     {
         title: { type: String, required: true, trim: true },
         slug: { type: String, unique: true, index: true },
@@ -33,11 +10,12 @@ const BookSchema = new Schema(
         isbn: { type: String, unique: true, index: true },
         edition: { type: String },
         category: { type: String, index: true },
-        language: { type: String, default: "English" },
+        language: { type: String, default: "English", index: true },
         condition: {
             type: String,
             enum: ["new", "like-new", "excellent", "good", "fair"],
             default: "good",
+            index: true,
         },
         pages: { type: Number },
         dimensions: {
@@ -68,7 +46,7 @@ const BookSchema = new Schema(
             enum: ["available", "pending", "sold", "removed"],
             default: "available",
         },
-        tags: [{ type: String }],
+        tags: [{ type: String, index: true }],
         ratings: [
             {
                 user: { type: Types.ObjectId, ref: "User" },
@@ -77,8 +55,7 @@ const BookSchema = new Schema(
                 createdAt: { type: Date, default: Date.now },
             },
         ],
-        payment_details: { type: PaymentDetailsSchema },
-        seller: { type: SellerInfoSchema, required: true },
+        createdAt: { type: Date, default: Date.now, index: true },
     },
     {
         timestamps: true,
