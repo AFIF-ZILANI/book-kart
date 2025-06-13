@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
 
 // Base API URL
-const API_BASE_URL = "localhost:3000/api/v1"; // Replace with your actual API base URL
+const API_BASE_URL = "localhost:3000/api/"; // Replace with your actual API base URL
 
     // `${process.env.NEXT_PUBLIC_API_URL}/${process.env.API_VERSION}` ||
     // "http://localhost:3000/api" + "/" + process.env.API_VERSION ||
@@ -18,25 +18,25 @@ const API_BASE_URL = "localhost:3000/api/v1"; // Replace with your actual API ba
 
 // Generic GET request helper
 export const fetchData = async <T,>(endpoint: string): Promise<T> => {
-    const response: AxiosResponse<T> = await axios.get(`/api/v1${endpoint}`);
+    const response: AxiosResponse<T> = await axios.get(`/api${endpoint}`);
     return response.data;
 };
 
 // Generic POST request helper
 export const postData = async <T, U>(endpoint: string, data: U): Promise<T> => {
-    const response: AxiosResponse<T> = await axios.post(`/api/v1${endpoint}`, data);
+    const response: AxiosResponse<T> = await axios.post(`/api${endpoint}`, data);
     return response.data;
 };
 
 // Generic PUT request helper
 export const putData = async <T,>(endpoint: string, data: any): Promise<T> => {
-    const response: AxiosResponse<T> = await axios.put(`/api/v1${endpoint}`, data);
+    const response: AxiosResponse<T> = await axios.put(`/api${endpoint}`, data);
     return response.data;
 };
 
 // Generic DELETE request helper
 export const deleteData = async <T,>(endpoint: string): Promise<T> => {
-    const response: AxiosResponse<T> = await axios.delete(`/api/v1${endpoint}`);
+    const response: AxiosResponse<T> = await axios.delete(`/api${endpoint}`);
     return response.data;
 };
 
