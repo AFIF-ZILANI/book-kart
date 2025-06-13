@@ -48,11 +48,15 @@ export function ErrorResponse(error: unknown): NextResponse {
     }
 }
 
-export function SuccessResponse<T>(
-    message: string,
-    status: number = 200,
-    data?: T | null
-): NextResponse {
+export function SuccessResponse<T>({
+    message,
+    data,
+    status = 200,
+}: {
+    message: string;
+    status?: number;
+    data?: T | null;
+}): NextResponse {
     return NextResponse.json(
         {
             message, // Message to be returned in the response
