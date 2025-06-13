@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import {
     Search,
@@ -59,20 +60,30 @@ const menuContent = [
     {
         label: "Logout",
         icon: <LogOut className="text-black" />,
-        onclickfunc: () => console.log("Logout"),
+        href: "/",
     },
 ];
 
 export default function Header() {
+    const { data: session, status } = useSession();
     const router = useRouter();
     const [isDropDownMenuOpen, setIsDropDownMenuOpen] = useState(false);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const user = {
-        avatar: "https://github.com/shadcn.png",
+        // avatar: "https://github.com/shadcn.png",
         // isLogin: false,
-        isLogin: true,
-        fullName: "AFIF ZILANI",
+        // isLogin: true,
+        // fullName: "AFIF ZILANI",
+        avatar: session?.user?.image || "",
+        isLogin: !!session,
+        fullName: session?.user?.name || "Guest User",
+        email: session?.user?.email,
     };
+
+    const imageFallback = user.fullName
+        .split(" ")
+        .map((name) => name[0])
+        .join("");
 
     return (
         <header className="p-2">
@@ -123,20 +134,20 @@ export default function Header() {
                                                 src={user.avatar}
                                                 alt={`avatar of ${user.fullName}`}
                                             />
-                                            <AvatarFallback>CN</AvatarFallback>
+                                            <AvatarFallback>{imageFallback}</AvatarFallback>
                                         </Avatar>
                                     </button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    {menuContent.map(({ label, icon, href, onclickfunc }) => (
+                                    {menuContent.map(({ label, icon, href }) => (
                                         <DropdownMenuItem key={label}>
-                                            {onclickfunc ? (
+                                            {label === "Logout" ? (
                                                 <div
                                                     onClick={() => {
-                                                        onclickfunc;
+                                                        signOut();
                                                         setIsDropDownMenuOpen((prev) => !prev);
                                                     }}
-                                                    className="flex items-center"
+                                                    className="flex items-center cursor-pointer"
                                                 >
                                                     {icon}
                                                     <DropdownMenuLabel>{label}</DropdownMenuLabel>
@@ -158,10 +169,16 @@ export default function Header() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button variant="ghost" type="button">
-                                <LogIn />
-                                Login
-                            </Button>
+                            status === "unauthenticated" && (
+                                <Button
+                                    variant="ghost"
+                                    type="button"
+                                    onClick={() => signIn("google")}
+                                >
+                                    <LogIn />
+                                    Login
+                                </Button>
+                            )
                         )}
                     </div>
                 </div>
@@ -186,19 +203,17 @@ export default function Header() {
                                     >
                                         <Home className="w-5 h-5" /> <span>Home</span>
                                     </Link>
-                                    {menuContent.map(({ label, icon, href, onclickfunc }) =>
-                                        onclickfunc ? (
-                                            <div
-                                                className="flex items-center font-bold gap-3 focus:bg-gray-100 rounded-lg py-2 pl-4 text-[1rem]"
+                                    {menuContent.map(({ label, icon, href }) =>
+                                        label === "Logout" ? (
+                                            <button
+                                                type="button"
+                                                className="flex items-center cursor-pointer font-bold gap-3 focus:bg-gray-100 rounded-lg py-2 pl-4 text-[1rem]"
                                                 key={label}
-                                                onClick={() => {
-                                                    onclickfunc;
-                                                    setIsSheetOpen((prev) => !prev);
-                                                }}
+                                                onClick={() => console.log("Logout clicked")}
                                             >
                                                 <span className="w-5 h-5">{icon}</span>
                                                 <span>{label}</span>
-                                            </div>
+                                            </button>
                                         ) : (
                                             <Link
                                                 href={href}
@@ -238,7 +253,12 @@ export default function Header() {
                             </SheetContent>
                         </Sheet>
                     ) : (
-                        <Button variant="ghost" type="button" className="text-[10px] sm:text-sm">
+                        <Button
+                            variant="ghost"
+                            type="button"
+                            className="text-[10px] sm:text-sm"
+                            onClick={() => signIn("google")}
+                        >
                             <LogIn />
                             Login
                         </Button>
