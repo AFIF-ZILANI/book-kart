@@ -352,12 +352,12 @@ export default function Page() {
             console.log("Book submission Data:", bookDataResponse);
             setReviewError("");
             // Reset all forms and states after successful submission
-            // basicForm.reset();
-            // bookDetailsForm.reset();
-            // paymentAndShippingForm.reset();
-            // setSelectedFiles(null);
-            // setUploadedImages([]);
-            // setCurrentStep(0);
+            basicForm.reset();
+            bookDetailsForm.reset();
+            paymentAndShippingForm.reset();
+            setSelectedFiles(null);
+            setUploadedImages([]);
+            setCurrentStep(0);
             toast.success("Book added successfully!");
         }
     }, [bookDataResponse, bookIsError, bookIsPending, bookIsSuccess, mutateBook, bookError]);
