@@ -3,14 +3,17 @@ import React from "react";
 import ReducWrapper from "./ReducWrapper";
 import { Toaster } from "react-hot-toast";
 import ReactQueryClientWrapper from "./ReactQueryWrapper";
+import { SessionProvider } from "next-auth/react";
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return (
         // <ReducWrapper>
-            <ReactQueryClientWrapper>
+        <ReactQueryClientWrapper>
+            <SessionProvider>
                 <Toaster />
                 {children}
-            </ReactQueryClientWrapper>
+            </SessionProvider>
+        </ReactQueryClientWrapper>
         // </ReducWrapper>
     );
 }
